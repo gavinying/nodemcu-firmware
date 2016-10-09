@@ -161,6 +161,8 @@ static void ICACHE_FLASH_ATTR http_send_callback( void * arg )
 	struct espconn	* conn	= (struct espconn *) arg;
 	request_args_t	* req	= (request_args_t *) conn->reverse;
 
+    HTTPCLIENT_DEBUG( "-ysd- Sending request body: %s\n", (uint8_t *) req->post_data );
+    
 	if ( req->post_data == NULL )
 	{
 		HTTPCLIENT_DEBUG( "All sent\n" );
@@ -230,10 +232,11 @@ static void ICACHE_FLASH_ATTR http_connect_callback( void * arg )
             "%s" // Host (if not provided in the headers from Lua)
             "Connection: close\r\n"
             "%s" // Headers from Lua (optional)
-            "%s" // User-Agent (if not provided in the headers from Lua)
+            //"%s" // User-Agent (if not provided in the headers from Lua)
             "%s" // Content-Length
             "\r\n",
-            req->method, req->path, host_header, req->headers, ua_header, post_headers );
+            //req->method, req->path, host_header, req->headers, ua_header, post_headers );
+            req->method, req->path, host_header, req->headers, post_headers );
 
     if (req->secure)
     {
@@ -243,7 +246,9 @@ static void ICACHE_FLASH_ATTR http_connect_callback( void * arg )
     {
         espconn_send( conn, (uint8_t *) buf, len );
     }
-
+    
+    HTTPCLIENT_DEBUG( "-ysd- Sending request header: %s\n", (uint8_t *) buf );
+    
     if (req->headers != NULL)
     {
         os_free( req->headers );
@@ -639,7 +644,8 @@ void ICACHE_FLASH_ATTR http_delete( const char * url, const char * headers, cons
 
 void ICACHE_FLASH_ATTR http_put( const char * url, const char * headers, const char * post_data, http_callback_t callback_handle )
 {
-	http_request( url, "PUT", headers, post_data, callback_handle, 0 );
+    HTTPCLIENT_DEBUG( "-ysd-: headers=%s, post_data=%s\n", headers, post_data );
+    http_request( url, "PUT", headers, post_data, callback_handle, 0 );
 }
 
 
