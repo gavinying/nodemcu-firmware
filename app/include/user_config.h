@@ -22,10 +22,11 @@ extern void luaL_assertfail(const char *file, int line, const char *message);
 
 // This enables lots of debug output and changes the serial bit rate. This
 // is normally only used by hardcore developers
-// #define DEVELOP_VERSION
+#define DEVELOP_VERSION
+
 #ifdef DEVELOP_VERSION
 #define NODE_DEBUG
-#define COAP_DEBUG
+//#define COAP_DEBUG
 #endif /* DEVELOP_VERSION */
 
 #define BIT_RATE_DEFAULT BIT_RATE_115200
