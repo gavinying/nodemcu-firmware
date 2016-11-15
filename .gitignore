@@ -7,3 +7,4 @@ server-ca.crt
 .cproject
 .project
 .settings/
+.autotools
